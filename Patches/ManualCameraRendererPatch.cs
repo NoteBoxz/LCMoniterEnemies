@@ -9,22 +9,17 @@ namespace LCMoniterEnemies.Patches
     [HarmonyPatch(typeof(ManualCameraRenderer))]
     public class ManualCameraRendererPatch
     {
-        private static Coroutine updateEnemiesCoroutine;
+        public static float UpdateTimer = 0f;
 
-        [HarmonyPatch("Awake")]
+        [HarmonyPatch("Update")]
         [HarmonyPostfix]
-        public static void AwakePostfix(ManualCameraRenderer __instance)
+        private static void Update2(ManualCameraRenderer __instance)
         {
-            // Start the coroutine to update enemies
-            updateEnemiesCoroutine = __instance.StartCoroutine(UpdateEnemiesCoroutine(__instance));
-        }
-
-        private static IEnumerator UpdateEnemiesCoroutine(ManualCameraRenderer __instance)
-        {
-            while (true)
+            UpdateTimer += Time.deltaTime;
+            if (UpdateTimer > LCMoniterEnemies.UpdateInterval.Value)
             {
+                UpdateTimer = 0f;
                 UpdateEnemyRadarTargets(__instance);
-                yield return new WaitForSeconds(1f); // Update every second, adjust as needed
             }
         }
 
@@ -32,13 +27,14 @@ namespace LCMoniterEnemies.Patches
         {
             // Get all current enemies
             EnemyAI[] currentEnemies = Object.FindObjectsOfType<EnemyAI>();
-            HashSet<Transform> currentEnemyTransforms = new HashSet<Transform>(currentEnemies.Select(e => e.transform));
 
             // Remove despawned enemies
-            __instance.radarTargets.RemoveAll(target =>
-                target.isNonPlayer &&
-                target.transform.GetComponent<EnemyAI>() != null &&
-                !currentEnemyTransforms.Contains(target.transform));
+            __instance.radarTargets.RemoveAll(target => target.isNonPlayer && target.transform == null);
+
+            if (__instance.cameraViewIndex >= __instance.radarTargets.Count)
+            {
+                __instance.cameraViewIndex = __instance.radarTargets.Count - 1;
+            }
 
             // Add new enemies
             foreach (EnemyAI enemy in currentEnemies)
@@ -52,7 +48,20 @@ namespace LCMoniterEnemies.Patches
 
         private static string AddEnemyToRadarTargets(ManualCameraRenderer __instance, Transform enemyTransform, string enemyName)
         {
-            string targetName = $"{enemyName}";
+            // Count existing instances of this enemy type
+            int count = __instance.radarTargets.Count(target => target.name.StartsWith(enemyName));
+
+            // Create the target name with the count
+            string targetName = "???";
+            if (count == 0)
+            {
+                targetName = enemyName;
+            }
+            else
+            {
+                targetName = $"{enemyName} #{count}";
+            }
+
             __instance.radarTargets.Add(new TransformAndName(enemyTransform, targetName, true));
             return targetName;
         }
