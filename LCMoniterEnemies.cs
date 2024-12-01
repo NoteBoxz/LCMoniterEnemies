@@ -2,6 +2,9 @@ using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 
 namespace LCMoniterEnemies
 {
@@ -11,7 +14,16 @@ namespace LCMoniterEnemies
         public static LCMoniterEnemies Instance { get; private set; } = null!;
         internal new static ManualLogSource Logger { get; private set; } = null!;
         internal static Harmony? Harmony { get; set; }
-        internal static ConfigEntry<float> UpdateInterval { get; set; } = null!;
+        internal static ConfigEntry<string> BlackList{ get; set; } = null!;
+        internal static ConfigEntry<float> TargetYoffset { get; set; } = null!;
+        public static List<string> GetParsedAttackBlacklist()
+        {
+            if (string.IsNullOrEmpty(BlackList.Value))
+            {
+                return new List<string>();
+            }
+            return BlackList.Value.Split(',').ToList();
+        }
 
         private void Awake()
         {
@@ -20,7 +32,8 @@ namespace LCMoniterEnemies
 
             Patch();
 
-            UpdateInterval = Config.Bind("Settings", "Update Interval (seconds)", 1.0f, "Interval in seconds to update the enemy counts.");
+            BlackList = Config.Bind("Settings", "Attack Blacklist", "", "The list of enemy names that pikmin can't attack (separated by commas, no spaces in between) (item1,item2,item3...)");
+            TargetYoffset = Config.Bind("Settings", "Camera Target Y Offset", 0f, "The Y (Vertical) Offset of the Enemy's target.");
 
             Logger.LogInfo($"{MyPluginInfo.PLUGIN_GUID} v{MyPluginInfo.PLUGIN_VERSION} has loaded!");
         }
