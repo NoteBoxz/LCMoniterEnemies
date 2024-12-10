@@ -11,9 +11,19 @@ namespace LCMoniterEnemies
         public EnemyAI Root = null!;
         public TransformAndName TnN = null!;
   
-        public void OnDestory()
+        public void OnDestroy()
         {
             ManualCameraRendererPatch.RemoveEnemyFromRadarTargets(this);
+        }
+
+        public void LateUpdate()
+        {
+            // Set the object's position relative to the parent
+            transform.localPosition = new Vector3(
+                transform.localPosition.x, // Keep the current local X position
+                LCMoniterEnemies.TargetYoffset.Value,               // Set Y to the desired offset
+                transform.localPosition.z  // Keep the current local Z position
+            );
         }
     }
 }

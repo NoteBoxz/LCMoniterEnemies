@@ -17,13 +17,19 @@ namespace LCMoniterEnemies.Patches
             ManualCameraRenderer[] __instances = Object.FindObjectsOfType<ManualCameraRenderer>();
             foreach (ManualCameraRenderer __instance in __instances)
             {
-                if (__instance.targetTransformIndex + 1 >= __instance.radarTargets.Count)
+                if (LCMoniterEnemies.AutoSwitchOnEnemyDeath.Value && __instance.IsServer)
+                {
+                    __instance.SwitchRadarTargetAndSync(__instance.targetTransformIndex + 1);
+                }
+                if (__instance.targetTransformIndex + 1 >= __instance.radarTargets.Count && __instance.IsServer)
                 {
                     LCMoniterEnemies.Logger.LogWarning($"{__instance.name} Predicted CameraViewIndex will be out of bounds when clearing, setting to {__instance.radarTargets.Count - 1}");
                     __instance.SwitchRadarTargetAndSync(__instance.radarTargets.Count - 1);
                 }
                 if (__instance.radarTargets.Contains(enemyTransform.TnN))
-                    __instance.radarTargets.RemoveAt(__instance.radarTargets.IndexOf(enemyTransform.TnN));
+                {
+                    __instance.radarTargets.Remove(enemyTransform.TnN);
+                }
             }
         }
 
