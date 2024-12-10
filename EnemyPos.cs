@@ -10,7 +10,7 @@ namespace LCMoniterEnemies
     {
         public EnemyAI Root = null!;
         public TransformAndName TnN = null!;
-  
+
         public void OnDestroy()
         {
             ManualCameraRendererPatch.RemoveEnemyFromRadarTargets(this);
@@ -18,6 +18,10 @@ namespace LCMoniterEnemies
 
         public void LateUpdate()
         {
+            if (Root.isEnemyDead && LCMoniterEnemies.AutoSwitchOnEnemyDeath.Value)
+            {
+                Destroy(gameObject);
+            }
             // Set the object's position relative to the parent
             transform.localPosition = new Vector3(
                 transform.localPosition.x, // Keep the current local X position
