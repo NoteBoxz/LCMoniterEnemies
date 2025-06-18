@@ -5,7 +5,7 @@
         <AssemblyName>NoteBoxz.MonitorEnemies</AssemblyName>
         <Product>LCMoniterEnemies</Product>
         <!-- Change to whatever version you're currently on. -->
-        <Version>1.3.0</Version>
+        <Version>1.4.0</Version>
     </PropertyGroup>
 
     <!-- Project Properties -->
@@ -51,6 +51,12 @@
 
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="OpenBodyCams">
+        <HintPath>..\Needed\Zaggy1024-OpenBodyCams\OpenBodyCams.dll</HintPath>
+      </Reference>
     </ItemGroup>
 	
 </Project>
