@@ -16,6 +16,9 @@ namespace LCMoniterEnemies
         internal static Harmony? Harmony { get; set; }
         internal static ConfigEntry<string> BlackList{ get; set; } = null!;
         internal static ConfigEntry<float> TargetYoffset { get; set; } = null!;
+        internal static ConfigEntry<float> TargetXoffset { get; set; } = null!;
+        internal static ConfigEntry<float> TargetZoffset { get; set; } = null!;
+
         internal static ConfigEntry<bool> AutoSwitchOnEnemyDeath { get; set; } = null!;
         public static List<string> GetParsedAttackBlacklist()
         {
@@ -35,6 +38,8 @@ namespace LCMoniterEnemies
 
             BlackList = Config.Bind("Settings", "Enemy Blacklist", "", "The list of enemy names that wont be monitored (separated by commas, no spaces in between) (item1,item2,item3...)");
             TargetYoffset = Config.Bind("Settings", "Camera Target Y Offset", 0f, "The Y (Vertical) Offset of the Enemy's target.");
+            TargetXoffset = Config.Bind("Settings", "Camera Target X Offset", 0f, "The X (Horizontal) Offset of the Enemy's target.");
+            TargetZoffset = Config.Bind("Settings", "Camera Target Z Offset", 0f, "The Z (Depth) Offset of the Enemy's target.");
             AutoSwitchOnEnemyDeath = Config.Bind("Settings", "Auto Switch on Enemy Death", false, "Automatically switch to the next enemy when the current one dies.");
 
             Logger.LogInfo($"{MyPluginInfo.PLUGIN_GUID} v{MyPluginInfo.PLUGIN_VERSION} has loaded!");

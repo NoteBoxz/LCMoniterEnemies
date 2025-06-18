@@ -17,7 +17,8 @@ namespace LCMoniterEnemies.Patches
             ManualCameraRenderer[] __instances = Object.FindObjectsOfType<ManualCameraRenderer>();
             foreach (ManualCameraRenderer __instance in __instances)
             {
-                if (LCMoniterEnemies.AutoSwitchOnEnemyDeath.Value && __instance.IsServer)
+                if (!(__instance.targetTransformIndex + 1 >= __instance.radarTargets.Count) &&
+                    __instance.radarTargets.Contains(enemyTransform.TnN) && LCMoniterEnemies.AutoSwitchOnEnemyDeath.Value && __instance.targetTransformIndex == __instance.radarTargets.IndexOf(enemyTransform.TnN) && __instance.IsServer)
                 {
                     __instance.SwitchRadarTargetAndSync(__instance.targetTransformIndex + 1);
                 }
