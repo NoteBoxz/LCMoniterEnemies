@@ -69,7 +69,7 @@ namespace LCMoniterEnemies
                 }
 
                 string str = child.gameObject.name.ToLower();
-                if (str.Contains("head") || str.Contains("h_j000"))
+                if (str.Contains("head") || str.Contains("h_j000") || str.Contains("f_j001"))
                 {
                     GameObject bodyCamPoint = new GameObject($"BodyCamPoint");
                     bodyCamPoint.transform.SetParent(child);

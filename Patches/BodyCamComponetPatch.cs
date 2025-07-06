@@ -16,7 +16,7 @@ namespace LCMoniterEnemies.Patches
             {
                 // Modify the argument before the original method runs
                 transform = enemyPos.BodyCamPoint;
-                LCMoniterEnemies.Logger.LogDebug($"BodyCamComponent.SetTargetToTransform: Setting target to {enemyPos.BodyCamPoint.name} for enemy {enemyPos.Root.enemyType.name}");
+                LCMoniterEnemies.Logger.LogDebug($"BodyCamComponent.SetTargetToTransform: Setting target to {enemyPos.BodyCamPoint.name} for enemy {enemyPos.Root.gameObject.name}");
             }
             else
             {
