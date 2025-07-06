@@ -39,7 +39,7 @@ namespace LCMoniterEnemies.Patches
 
             // does nothing for almost all enemies, execpt for the masked.
             enemyToBeamUp.ShipTeleportEnemy();
-            enemyToBeamUp.creatureSFX.PlayOneShot(Object.FindObjectOfType<ShipTeleporter>().beamUpPlayerBodySFX);
+            enemyToBeamUp.creatureSFX.PlayOneShot(__instance.beamUpPlayerBodySFX);
 
             // FX delay
             yield return new WaitForSeconds(3f);
