@@ -26,6 +26,7 @@ namespace LCMoniterEnemies
 
         internal static ConfigEntry<bool> AutoSwitchOnEnemyDeath { get; set; } = null!;
         internal static ConfigEntry<bool> CreateBodyCam { get; set; } = null!;
+        internal static ConfigEntry<bool> TryTelewarp { get; set; } = null!;
         public static List<string> GetParsedAttackBlacklist()
         {
             if (string.IsNullOrEmpty(BlackList.Value))
@@ -55,6 +56,7 @@ namespace LCMoniterEnemies
             TargetZoffset = Config.Bind("Settings", "Camera Target Z Offset", 0f, "The Z (Depth) Offset of the Enemy's target.");
             AutoSwitchOnEnemyDeath = Config.Bind("Settings", "Auto Switch on Enemy Death", false, "Automatically switch to the next enemy when the current one dies.");
             CreateBodyCam = Config.Bind("Settings", "Create BodyCam", true, "Create a BodyCam for each enemy. If false, the enemy will spesfic point for a bodycam.");
+            TryTelewarp = Config.Bind("Settings", "Allow Telepor", true, "Try to teleport enemies to the ship when they are targeted by the teleporter. (Could break some enemies AI)");
 
             Logger.LogInfo($"{MyPluginInfo.PLUGIN_GUID} v{MyPluginInfo.PLUGIN_VERSION} has loaded!");
         }

@@ -5,7 +5,7 @@
         <AssemblyName>NoteBoxz.MonitorEnemies</AssemblyName>
         <Product>LCMoniterEnemies</Product>
         <!-- Change to whatever version you're currently on. -->
-        <Version>1.4.0</Version>
+        <Version>1.5.0</Version>
     </PropertyGroup>
 
     <!-- Project Properties -->

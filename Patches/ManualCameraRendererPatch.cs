@@ -6,6 +6,19 @@ namespace LCMoniterEnemies.Patches
     [HarmonyPatch(typeof(ManualCameraRenderer))]
     internal class ManualCameraRendererPatch
     {
+        public static EnemyAI? EnemyTargeting = null;
+
+        [HarmonyPatch(nameof(ManualCameraRenderer.updateMapTarget))]
+        [HarmonyPostfix]
+        public static void updateMapTargetPostfix(ManualCameraRenderer __instance, int setRadarTargetIndex, bool calledFromRPC = true)
+        {
+            EnemyPos componet = __instance.radarTargets[setRadarTargetIndex].transform.gameObject.GetComponent<EnemyPos>();
+            if (componet != null)
+            {
+                EnemyTargeting = componet.Root;
+            }
+        }
+
         public static void RemoveEnemyFromRadarTargets(EnemyPos enemyTransform)
         {
             if (enemyTransform.TnN == null)
